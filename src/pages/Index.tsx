@@ -180,43 +180,81 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-white p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen text-white p-6 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl float-animation"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl float-animation" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-full blur-2xl float-animation" style={{animationDelay: '4s'}}></div>
+      </div>
+      
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#0ea5e9] to-[#06b6d4] bg-clip-text text-transparent">
+          <div className="relative inline-block mb-6">
+            <Icon name="Music" size={64} className="mx-auto text-blue-400 pulse-glow" />
+          </div>
+          <h1 className="text-5xl font-bold mb-4 gradient-text">
             MP3 Cover Processor
           </h1>
-          <p className="text-gray-400 text-lg">
+          <p className="text-gray-300 text-xl leading-relaxed max-w-2xl mx-auto">
             Автоматическое добавление обложек к MP3 файлам из архива
           </p>
+          <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-gray-400">
+            <Icon name="Zap" size={16} className="text-yellow-400" />
+            <span>Быстро</span>
+            <span>•</span>
+            <Icon name="Shield" size={16} className="text-green-400" />
+            <span>Безопасно</span>
+            <span>•</span>
+            <Icon name="Sparkles" size={16} className="text-purple-400" />
+            <span>Качественно</span>
+          </div>
         </div>
 
         {/* Main Content */}
         <div className="space-y-8">
           {!uploadedFile && !isProcessing && !processedFile && (
-            <Card className="bg-[#2d2d2d] border-[#404040] p-8">
+            <Card className="glass-card p-8 transform hover:scale-[1.02] transition-all duration-300">
               <div
-                className={`border-2 border-dashed ${
-                  dragActive ? 'border-[#0ea5e9] bg-[#0ea5e9]/10' : 'border-[#404040]'
-                } rounded-lg p-12 text-center transition-colors`}
+                className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-500 ${
+                  dragActive 
+                    ? 'border-blue-400 bg-gradient-to-br from-blue-500/20 to-purple-500/20 glow-effect scale-105 shimmer' 
+                    : 'border-gray-600 hover:border-blue-500/50 hover:bg-gradient-to-br hover:from-blue-500/10 hover:to-purple-500/10'
+                }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
               >
-                <Icon name="Upload" size={48} className="mx-auto mb-4 text-[#0ea5e9]" />
-                <h3 className="text-xl font-semibold mb-2">Загрузите ZIP архив</h3>
-                <p className="text-gray-400 mb-6">
-                  Перетащите архив или нажмите для выбора файла
-                </p>
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="bg-[#0ea5e9] hover:bg-[#0284c7]"
-                >
-                  <Icon name="FolderOpen" size={20} className="mr-2" />
-                  Выбрать файл
-                </Button>
+                <div className={`transition-all duration-300 ${
+                  dragActive ? 'transform scale-110' : ''
+                }`}>
+                  <Icon 
+                    name={dragActive ? "FileMusic" : "Upload"} 
+                    size={64} 
+                    className={`mx-auto mb-6 transition-all duration-300 ${
+                      dragActive ? 'text-blue-400 pulse-glow' : 'text-blue-500'
+                    }`} 
+                  />
+                  <h3 className="text-2xl font-bold mb-3 gradient-text">
+                    {dragActive ? 'Отпустите файл' : 'Загрузите ZIP архив'}
+                  </h3>
+                  <p className="text-gray-300 mb-8 text-lg">
+                    {dragActive 
+                      ? 'Файл будет обработан автоматически'
+                      : 'Перетащите архив или нажмите для выбора файла'
+                    }
+                  </p>
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 glow-effect"
+                    size="lg"
+                  >
+                    <Icon name="FolderOpen" size={20} className="mr-2" />
+                    Выбрать файл
+                  </Button>
+                </div>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -229,29 +267,33 @@ const Index = () => {
           )}
 
           {uploadedFile && !isProcessing && !processedFile && (
-            <Card className="bg-[#2d2d2d] border-[#404040] p-6">
-              <div className="flex items-center justify-between mb-4">
+            <Card className="glass-card p-6 transform hover:scale-[1.01] transition-all duration-300 animate-fade-in">
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
-                  <Icon name="Archive" size={24} className="mr-3 text-[#0ea5e9]" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                    <Icon name="Archive" size={24} className="text-white" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold">{uploadedFile.name}</h3>
-                    <p className="text-gray-400 text-sm">
+                    <h3 className="font-bold text-lg text-white">{uploadedFile.name}</h3>
+                    <p className="text-gray-300">
                       {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                   </div>
                 </div>
                 <Button
                   onClick={reset}
-                  variant="outline"
-                  className="border-[#404040] text-gray-400"
+                  variant="ghost"
+                  className="text-gray-400 hover:text-white hover:bg-red-500/20 rounded-xl"
+                  size="sm"
                 >
-                  <Icon name="X" size={16} />
+                  <Icon name="X" size={18} />
                 </Button>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-4">
                 <Button
                   onClick={processFiles}
-                  className="bg-[#0ea5e9] hover:bg-[#0284c7] flex-1"
+                  className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 flex-1 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 glow-effect"
+                  size="lg"
                 >
                   <Icon name="Play" size={20} className="mr-2" />
                   Начать обработку
@@ -261,36 +303,52 @@ const Index = () => {
           )}
 
           {isProcessing && (
-            <Card className="bg-[#2d2d2d] border-[#404040] p-6">
-              <div className="text-center mb-6">
-                <Icon name="Loader2" size={48} className="mx-auto mb-4 text-[#0ea5e9] animate-spin" />
-                <h3 className="text-xl font-semibold mb-2">Обработка файлов</h3>
-                <p className="text-gray-400">{status}</p>
+            <Card className="glass-card p-8 animate-fade-in">
+              <div className="text-center mb-8">
+                <div className="relative inline-block mb-6">
+                  <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center pulse-glow">
+                    <Icon name="Loader2" size={32} className="text-white animate-spin" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold mb-3 gradient-text">Обработка файлов</h3>
+                <p className="text-gray-300 text-lg">{status}</p>
               </div>
-              <Progress value={progress} className="h-2" />
-              <p className="text-center text-sm text-gray-400 mt-2">{progress}%</p>
+              <div className="relative mb-4">
+                <Progress value={progress} className="h-3 bg-gray-700" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-20 animate-pulse"></div>
+              </div>
+              <div className="text-center">
+                <span className="text-2xl font-bold gradient-text">{progress}%</span>
+                <div className="text-sm text-gray-400 mt-1">Завершено</div>
+              </div>
             </Card>
           )}
 
           {processedFile && (
-            <Card className="bg-[#2d2d2d] border-[#404040] p-6">
-              <div className="text-center mb-6">
-                <Icon name="CheckCircle" size={48} className="mx-auto mb-4 text-green-500" />
-                <h3 className="text-xl font-semibold mb-2">Обработка завершена</h3>
-                <p className="text-gray-400">Файлы успешно обработаны и готовы к скачиванию</p>
+            <Card className="glass-card p-8 animate-scale-in">
+              <div className="text-center mb-8">
+                <div className="relative inline-block mb-6">
+                  <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center glow-effect">
+                    <Icon name="CheckCircle" size={32} className="text-white" />
+                  </div>
+                  <div className="absolute -inset-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-full animate-ping"></div>
+                </div>
+                <h3 className="text-2xl font-bold mb-3 gradient-text">Обработка завершена!</h3>
+                <p className="text-gray-300 text-lg">Файлы успешно обработаны и готовы к скачиванию</p>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-4">
                 <Button
                   onClick={downloadProcessed}
-                  className="bg-green-600 hover:bg-green-700 flex-1"
+                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 flex-1 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 glow-effect"
+                  size="lg"
                 >
                   <Icon name="Download" size={20} className="mr-2" />
                   Скачать результат
                 </Button>
                 <Button
                   onClick={reset}
-                  variant="outline"
-                  className="border-[#404040] text-gray-400"
+                  variant="ghost"
+                  className="text-gray-400 hover:text-white hover:bg-gray-600/20 rounded-xl px-6"
                 >
                   Новый файл
                 </Button>
@@ -300,9 +358,32 @@ const Index = () => {
         </div>
 
         {/* Info */}
-        <div className="mt-12 text-center text-gray-500 text-sm">
-          <p>Поддерживаются файлы с номерами от 000 до 999</p>
-          <p>Формат: audio_XXX.mp3 + cover_XXX.png</p>
+        <div className="mt-16 text-center">
+          <div className="glass-card p-6 rounded-2xl max-w-2xl mx-auto">
+            <h4 className="font-semibold text-lg mb-3 gradient-text">Поддерживаемые форматы</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="flex items-center justify-center space-x-2 text-gray-300">
+                <Icon name="FileAudio" size={16} className="text-blue-400" />
+                <span>MP3 файлы (000-999)</span>
+              </div>
+              <div className="flex items-center justify-center space-x-2 text-gray-300">
+                <Icon name="Image" size={16} className="text-purple-400" />
+                <span>PNG обложки (000-999)</span>
+              </div>
+            </div>
+            <div className="mt-4 text-xs text-gray-400">
+              Формат: audio_XXX.mp3 + cover_XXX.png
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Footer */}
+      <div className="text-center mt-16 pb-8">
+        <div className="inline-flex items-center space-x-2 text-gray-400 text-sm">
+          <span>Made with</span>
+          <Icon name="Heart" size={16} className="text-red-500 animate-pulse" />
+          <span>for music lovers</span>
         </div>
       </div>
     </div>
