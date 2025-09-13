@@ -180,81 +180,74 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen text-white p-6 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-full blur-3xl float-animation"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl float-animation" style={{animationDelay: '2s'}}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-full blur-2xl float-animation" style={{animationDelay: '4s'}}></div>
-      </div>
-      
-      <div className="max-w-4xl mx-auto relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-6">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="relative inline-block mb-6">
-            <Icon name="Music" size={64} className="mx-auto text-blue-400 pulse-glow" />
+          <div className="mb-6">
+            <Icon name="Music" size={64} className="mx-auto text-blue-400 animate-pulse" />
           </div>
-          <h1 className="text-5xl font-bold mb-4 gradient-text">
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             MP3 Cover Processor
           </h1>
-          <p className="text-gray-300 text-xl leading-relaxed max-w-2xl mx-auto">
+          <p className="text-gray-300 text-xl max-w-2xl mx-auto">
             Автоматическое добавление обложек к MP3 файлам из архива
           </p>
-          <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-gray-400">
-            <Icon name="Zap" size={16} className="text-yellow-400" />
-            <span>Быстро</span>
-            <span>•</span>
-            <Icon name="Shield" size={16} className="text-green-400" />
-            <span>Безопасно</span>
-            <span>•</span>
-            <Icon name="Sparkles" size={16} className="text-purple-400" />
-            <span>Качественно</span>
+          <div className="mt-6 flex items-center justify-center space-x-6 text-sm text-gray-400">
+            <div className="flex items-center space-x-2">
+              <Icon name="Zap" size={16} className="text-yellow-400" />
+              <span>Быстро</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Icon name="Shield" size={16} className="text-green-400" />
+              <span>Безопасно</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Icon name="Sparkles" size={16} className="text-purple-400" />
+              <span>Качественно</span>
+            </div>
           </div>
         </div>
 
         {/* Main Content */}
         <div className="space-y-8">
           {!uploadedFile && !isProcessing && !processedFile && (
-            <Card className="glass-card p-8 transform hover:scale-[1.02] transition-all duration-300">
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 p-8">
               <div
-                className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-500 ${
+                className={`border-2 border-dashed rounded-xl p-12 text-center transition-all duration-300 ${
                   dragActive 
-                    ? 'border-blue-400 bg-gradient-to-br from-blue-500/20 to-purple-500/20 glow-effect scale-105 shimmer' 
-                    : 'border-gray-600 hover:border-blue-500/50 hover:bg-gradient-to-br hover:from-blue-500/10 hover:to-purple-500/10'
+                    ? 'border-blue-400 bg-blue-400/10 scale-105' 
+                    : 'border-gray-600 hover:border-blue-400/50'
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
               >
-                <div className={`transition-all duration-300 ${
-                  dragActive ? 'transform scale-110' : ''
-                }`}>
-                  <Icon 
-                    name={dragActive ? "FileMusic" : "Upload"} 
-                    size={64} 
-                    className={`mx-auto mb-6 transition-all duration-300 ${
-                      dragActive ? 'text-blue-400 pulse-glow' : 'text-blue-500'
-                    }`} 
-                  />
-                  <h3 className="text-2xl font-bold mb-3 gradient-text">
-                    {dragActive ? 'Отпустите файл' : 'Загрузите ZIP архив'}
-                  </h3>
-                  <p className="text-gray-300 mb-8 text-lg">
-                    {dragActive 
-                      ? 'Файл будет обработан автоматически'
-                      : 'Перетащите архив или нажмите для выбора файла'
-                    }
-                  </p>
-                  <Button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 glow-effect"
-                    size="lg"
-                  >
-                    <Icon name="FolderOpen" size={20} className="mr-2" />
-                    Выбрать файл
-                  </Button>
-                </div>
+                <Icon 
+                  name={dragActive ? "FileMusic" : "Upload"} 
+                  size={64} 
+                  className={`mx-auto mb-6 transition-all duration-300 ${
+                    dragActive ? 'text-blue-400' : 'text-blue-500'
+                  }`} 
+                />
+                <h3 className="text-2xl font-bold mb-3 text-white">
+                  {dragActive ? 'Отпустите файл' : 'Загрузите ZIP архив'}
+                </h3>
+                <p className="text-gray-300 mb-8 text-lg">
+                  {dragActive 
+                    ? 'Файл будет обработан автоматически'
+                    : 'Перетащите архив или нажмите для выбора файла'
+                  }
+                </p>
+                <Button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold"
+                  size="lg"
+                >
+                  <Icon name="FolderOpen" size={20} className="mr-2" />
+                  Выбрать файл
+                </Button>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -267,7 +260,7 @@ const Index = () => {
           )}
 
           {uploadedFile && !isProcessing && !processedFile && (
-            <Card className="glass-card p-6 transform hover:scale-[1.01] transition-all duration-300 animate-fade-in">
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 p-6">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
                   <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
@@ -283,63 +276,60 @@ const Index = () => {
                 <Button
                   onClick={reset}
                   variant="ghost"
-                  className="text-gray-400 hover:text-white hover:bg-red-500/20 rounded-xl"
+                  className="text-gray-400 hover:text-white hover:bg-red-500/20"
                   size="sm"
                 >
                   <Icon name="X" size={18} />
                 </Button>
               </div>
-              <div className="flex gap-4">
-                <Button
-                  onClick={processFiles}
-                  className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 flex-1 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 glow-effect"
-                  size="lg"
-                >
-                  <Icon name="Play" size={20} className="mr-2" />
-                  Начать обработку
-                </Button>
-              </div>
+              <Button
+                onClick={processFiles}
+                className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 py-3 rounded-xl font-semibold"
+                size="lg"
+              >
+                <Icon name="Play" size={20} className="mr-2" />
+                Начать обработку
+              </Button>
             </Card>
           )}
 
           {isProcessing && (
-            <Card className="glass-card p-8 animate-fade-in">
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 p-8">
               <div className="text-center mb-8">
-                <div className="relative inline-block mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center pulse-glow">
-                    <Icon name="Loader2" size={32} className="text-white animate-spin" />
-                  </div>
+                <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Icon name="Loader2" size={32} className="text-white animate-spin" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3 gradient-text">Обработка файлов</h3>
+                <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  Обработка файлов
+                </h3>
                 <p className="text-gray-300 text-lg">{status}</p>
               </div>
-              <div className="relative mb-4">
-                <Progress value={progress} className="h-3 bg-gray-700" />
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-20 animate-pulse"></div>
-              </div>
+              <Progress value={progress} className="mb-4" />
               <div className="text-center">
-                <span className="text-2xl font-bold gradient-text">{progress}%</span>
-                <div className="text-sm text-gray-400 mt-1">Завершено</div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  {progress}%
+                </span>
               </div>
             </Card>
           )}
 
           {processedFile && (
-            <Card className="glass-card p-8 animate-scale-in">
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 p-8">
               <div className="text-center mb-8">
-                <div className="relative inline-block mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center glow-effect">
-                    <Icon name="CheckCircle" size={32} className="text-white" />
-                  </div>
-                  <div className="absolute -inset-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-full animate-ping"></div>
+                <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Icon name="CheckCircle" size={32} className="text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3 gradient-text">Обработка завершена!</h3>
-                <p className="text-gray-300 text-lg">Файлы успешно обработаны и готовы к скачиванию</p>
+                <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                  Обработка завершена!
+                </h3>
+                <p className="text-gray-300 text-lg">
+                  Файлы успешно обработаны и готовы к скачиванию
+                </p>
               </div>
               <div className="flex gap-4">
                 <Button
                   onClick={downloadProcessed}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 flex-1 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 glow-effect"
+                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 py-3 rounded-xl font-semibold"
                   size="lg"
                 >
                   <Icon name="Download" size={20} className="mr-2" />
@@ -348,7 +338,7 @@ const Index = () => {
                 <Button
                   onClick={reset}
                   variant="ghost"
-                  className="text-gray-400 hover:text-white hover:bg-gray-600/20 rounded-xl px-6"
+                  className="text-gray-400 hover:text-white hover:bg-gray-600/20 px-6"
                 >
                   Новый файл
                 </Button>
@@ -359,8 +349,10 @@ const Index = () => {
 
         {/* Info */}
         <div className="mt-16 text-center">
-          <div className="glass-card p-6 rounded-2xl max-w-2xl mx-auto">
-            <h4 className="font-semibold text-lg mb-3 gradient-text">Поддерживаемые форматы</h4>
+          <Card className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 max-w-2xl mx-auto">
+            <h4 className="font-semibold text-lg mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Поддерживаемые форматы
+            </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div className="flex items-center justify-center space-x-2 text-gray-300">
                 <Icon name="FileAudio" size={16} className="text-blue-400" />
@@ -374,16 +366,16 @@ const Index = () => {
             <div className="mt-4 text-xs text-gray-400">
               Формат: audio_XXX.mp3 + cover_XXX.png
             </div>
-          </div>
+          </Card>
         </div>
-      </div>
-      
-      {/* Footer */}
-      <div className="text-center mt-16 pb-8">
-        <div className="inline-flex items-center space-x-2 text-gray-400 text-sm">
-          <span>Made with</span>
-          <Icon name="Heart" size={16} className="text-red-500 animate-pulse" />
-          <span>for music lovers</span>
+
+        {/* Footer */}
+        <div className="text-center mt-16 pb-8">
+          <div className="inline-flex items-center space-x-2 text-gray-400 text-sm">
+            <span>Made with</span>
+            <Icon name="Heart" size={16} className="text-red-500 animate-pulse" />
+            <span>for music lovers</span>
+          </div>
         </div>
       </div>
     </div>
